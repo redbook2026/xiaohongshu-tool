@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>레드북 마케팅 — 샤오홍슈 AI 콘텐츠</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8323A;
+    --red-dark: #B52028;
+    --red-light: #FFF0F0;
+    --gold: #C9A84C;
+    --gold-light: #FDF6E3;
+    --ink: #1C1C1E;
+    --ink-2: #48484A;
+    --ink-3: #8E8E93;
+    --bg: #F5F5F7;
+    --surface: #FFFFFF;
+    --border: #E5E5EA;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* 헤더 */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: var(--red);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 18px; color: white; font-weight: 500;
+  }
+  .logo-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+  }
+  .logo-sub {
+    font-size: 11px;
+    color: var(--ink-3);
+    font-weight: 300;
+  }
+
+  /* 사용량 배지 */
+  .usage-badge {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .usage-info {
+    text-align: right;
+  }
+  .usage-label {
+    font-size: 11px;
+    color: var(--ink-3);
+    font-weight: 300;
+  }
+  .usage-count {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .usage-count span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+  .usage-bar-wrap {
+    width: 120px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .usage-bar {
+    height: 100%;
+    background: var(--red);
+    border-radius: 2px;
+    transition: width .3s;
+  }
+  .plan-badge {
+    background: var(--gold-light);
+    color: var(--gold);
+    border: 1px solid #E8D89A;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* 탭 네비 */
+  .tab-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+  }
+  .tab-btn {
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-3);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all .15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tab-btn.active {
+    color: var(--red);
+    border-bottom-color: var(--red);
+    font-weight: 500;
+  }
+  .tab-btn:hover:not(.active) {
+    color: var(--ink-2);
+  }
+  .tab-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  /* 메인 */
+  .main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* 탭 콘텐츠 */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* 카드 */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--red-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  /* 폼 */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-group:last-child { margin-bottom: 0; }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-2);
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  input, textarea, select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--ink);
+    transition: border-color .15s, box-shadow .15s;
+    resize: vertical;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(232,50,58,0.08);
+  }
+  textarea { min-height: 90px; }
+
+  /* 태그 */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .tag-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    transition: all .15s;
+    color: var(--ink-2);
+    user-select: none;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .tag-chip.selected {
+    background: var(--red-light);
+    border-color: var(--red);
+    color: var(--red-dark);
+    font-weight: 500;
+  }
+
+  /* 생성 버튼 */
+  .btn-generate {
+    width: 100%;
+    padding: 15px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .15s;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: -0.2px;
+  }
+  .btn-generate:hover { background: var(--red-dark); transform: translateY(-1px); }
+  .btn-generate:active { transform: translateY(0); }
+  .btn-generate:disabled { background: #D0BEBE; cursor: not-allowed; transform: none; }
+
+  /* 결과 */
+  .result-area { margin-top: 20px; }
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    animation: fadeUp .3s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .result-header {
+    padding: 16px 20px;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .result-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .result-policy-badge {
+    font-size: 10px;
+    background: rgba(255,255,255,0.1);
+    color: #4CD964;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .result-title-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+  }
+  .result-actions { display: flex; gap: 8px; }
+  .btn-copy {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    transition: all .15s;
+    font-weight: 500;
+  }
+  .btn-copy:hover { border-color: white; color: white; }
+  .btn-copy.primary {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+  }
+  .btn-copy.primary:hover { background: var(--red-dark); }
+
+  .result-body { padding: 24px; }
+  .lang-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .lang-tab {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    color: var(--ink-3);
+    transition: all .15s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .lang-tab.active {
+    background: var(--red-light);
+    border-color: var(--red);
+    color: var(--red-dark);
+    font-weight: 500;
+  }
+  .result-text {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    font-size: 15px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    min-height: 160px;
+    color: var(--ink);
+  }
+  .result-text.zh {
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  .hashtag-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .hashtag-pill {
+    background: var(--red-light);
+    color: var(--red-dark);
+    font-size: 12px;
+    font-family: 'Noto Sans SC', sans-serif;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid #F5C0C0;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .hashtag-pill:hover {
+    background: var(--red);
+    color: white;
+    border-color: var(--red);
+  }
+  .result-footer {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .result-meta {
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+  .policy-ok {
+    font-size: 10px;
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #C8E6C9;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  /* 로딩 */
+  .loading-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    display: none;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+  .loading-step {
+    font-size: 13px;
+    color: var(--ink-3);
+    transition: color .3s;
+  }
+  .loading-step.active { color: var(--red); font-weight: 500; }
+  .loading-step.done { color: var(--ink-3); text-decoration: line-through; }
+
+  /* 빈 상태 */
+  .empty-state {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+    padding: 60px;
+    text-align: center;
+    color: var(--ink-3);
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
+  .empty-text { font-size: 14px; line-height: 1.6; }
+
+  /* 히스토리 */
+  .history-section { margin-top: 20px; }
+  .history-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .history-list { display: flex; flex-direction: column; gap: 8px; }
+  .history-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color .15s;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .history-item:hover { border-color: var(--red); }
+  .history-time { font-size: 11px; color: var(--ink-3); }
+
+  /* 번역 탭 */
+  .translate-area { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .translate-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .translate-panel-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .translate-panel-body { padding: 20px; }
+  .translate-textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--ink);
+    resize: none;
+    min-height: 200px;
+    line-height: 1.8;
+  }
+  .translate-textarea:focus { outline: none; }
+  .translate-textarea.zh {
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  .translate-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .char-count { font-size: 11px; color: var(--ink-3); }
+  .btn-translate {
+    padding: 10px 24px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-translate:hover { background: var(--red-dark); }
+  .btn-translate:disabled { background: #D0BEBE; cursor: not-allowed; }
+
+  /* 사용량 탭 */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-value.red { color: var(--red); }
+  .stat-sub { font-size: 12px; color: var(--ink-3); }
+  .plan-card {
+    background: linear-gradient(135deg, #1C1C1E 0%, #2C2C2E 100%);
+    border-radius: 16px;
+    padding: 28px;
+    color: white;
+    margin-bottom: 20px;
+  }
+  .plan-name {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .plan-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .plan-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+  }
+  .plan-features {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .plan-feature {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .plan-feature::before {
+    content: '✓';
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .form-row { grid-template-columns: 1fr; }
+    .translate-area { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    header { padding: 0 16px; }
+    .tab-nav { padding: 0 16px; overflow-x: auto; }
+    .main { padding: 20px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">红</div>
+    <div>
+      <div class="logo-text">레드북 마케팅</div>
+      <div class="logo-sub">샤오홍슈 AI 마케팅 도구</div>
+    </div>
+  </div>
+  <div class="usage-badge">
+    <div class="usage-info">
+      <div class="usage-label">이번 달 사용량</div>
+      <div class="usage-count" id="header-usage">0 <span>/ 30회</span></div>
+      <div class="usage-bar-wrap">
+        <div class="usage-bar" id="usage-bar" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="plan-badge">베타 플랜</div>
+  </div>
+</header>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('generate', this)">
+    <span>✦</span> 콘텐츠 생성
+  </button>
+  <button class="tab-btn" onclick="switchTab('translate', this)">
+    <span>⇄</span> 한중 현지화
+  </button>
+  <button class="tab-btn" onclick="switchTab('usage', this)">
+    <span>◎</span> 사용 현황
+  </button>
+</div>
+
+<div class="main">
+
+  <!-- 콘텐츠 생성 탭 -->
+  <div class="tab-content active" id="tab-generate">
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-icon">✦</div>
+        샤오홍슈 포스팅 자동 생성
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>매장 / 브랜드명</label>
+          <input type="text" id="brand-name" placeholder="예: 성수옥상">
+        </div>
+        <div class="form-group">
+          <label>업종</label>
+          <select id="category">
+            <option value="restaurant">레스토랑 / 맛집</option>
+            <option value="cafe">카페 / 디저트</option>
+            <option value="bar">바 / 펍 / 루프탑</option>
+            <option value="experience">체험 / 액티비티</option>
+            <option value="beauty">뷰티 / 스파</option>
+            <option value="shopping">쇼핑</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>핵심 셀링 포인트</label>
+        <textarea id="selling-points" placeholder="예: 성수동 루프탑 뷰, 내추럴 와인 특화, 예약 필수, 인스타 감성 분위기, 소규모 운영"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>콘텐츠 톤</label>
+          <div class="tag-row" id="tone-tags">
+            <span class="tag-chip selected" onclick="toggleTag(this)">감성적 🌸</span>
+            <span class="tag-chip" onclick="toggleTag(this)">트렌디 ✨</span>
+            <span class="tag-chip" onclick="toggleTag(this)">럭셔리 💎</span>
+            <span class="tag-chip" onclick="toggleTag(this)">친근함 😊</span>
+            <span class="tag-chip" onclick="toggleTag(this)">여행팁 🗺️</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>타겟 감성</label>
+          <div class="tag-row" id="target-tags">
+            <span class="tag-chip selected" onclick="toggleTag(this)">Z세대 여행자</span>
+            <span class="tag-chip" onclick="toggleTag(this)">커플 여행</span>
+            <span class="tag-chip" onclick="toggleTag(this)">혼행족</span>
+            <span class="tag-chip" onclick="toggleTag(this)">미식 탐방</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-generate" id="generate-btn" onclick="generateContent()">
+        ✦ 샤오홍슈 포스팅 생성
+      </button>
+    </div>
+
+    <!-- 로딩 -->
+    <div class="loading-card" id="loading-card">
+      <div class="spinner"></div>
+      <div class="loading-steps">
+        <div class="loading-step active" id="step1">✦ 매장 정보 분석 중...</div>
+        <div class="loading-step" id="step2">⇄ 샤오홍슈 감성으로 변환 중...</div>
+        <div class="loading-step" id="step3">◎ 정책 검토 및 해시태그 추출 중...</div>
+      </div>
+    </div>
+
+    <!-- 빈 상태 -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">📝</div>
+      <div class="empty-text">매장 정보를 입력하고 생성 버튼을 누르면<br>샤오홍슈 포스팅이 여기에 나타나요</div>
+    </div>
+
+    <!-- 결과 -->
+    <div class="result-area" id="result-area" style="display:none">
+      <div class="result-card">
+        <div class="result-header">
+          <div class="result-header-left">
+            <span class="result-title-text">생성 결과</span>
+            <span class="result-policy-badge">✓ 정책 준수</span>
+          </div>
+          <div class="result-actions">
+            <button class="btn-copy" onclick="copyResult('ko')">한국어 복사</button>
+            <button class="btn-copy primary" onclick="copyResult('zh')">중문 복사</button>
+          </div>
+        </div>
+        <div class="result-body">
+          <div class="lang-tabs">
+            <button class="lang-tab active" onclick="showLang('zh')">中文 버전</button>
+            <button class="lang-tab" onclick="showLang('ko')">한국어 원문</button>
+          </div>
+          <div id="result-zh" class="result-text zh"></div>
+          <div id="result-ko" class="result-text" style="display:none"></div>
+          <div class="hashtag-area" id="hashtag-area"></div>
+          <div class="result-footer">
+            <span class="result-meta" id="result-time"></span>
+            <span class="policy-ok">✓ 샤오홍슈 정책 준수 · 금지어 자동 배제</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 히스토리 -->
+    <div class="history-section" id="history-section" style="display:none">
+      <div class="history-title">최근 생성</div>
+      <div class="history-list" id="history-list"></div>
+    </div>
+  </div>
+
+  <!-- 현지화 번역 탭 -->
+  <div class="tab-content" id="tab-translate">
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">
+        <div class="card-title-icon">⇄</div>
+        한국어 → 중국어 현지화
+      </div>
+      <p style="font-size:13px; color:var(--ink-3); margin-bottom:0;">단순 번역이 아닌 샤오홍슈 Z세대 감성에 맞게 재창작합니다. 정책 위반 표현을 자동으로 교체합니다.</p>
+    </div>
+
+    <div class="translate-area">
+      <div class="translate-panel">
+        <div class="translate-panel-header">
+          🇰🇷 한국어 원문
+        </div>
+        <div class="translate-panel-body">
+          <textarea class="translate-textarea" id="translate-input" placeholder="번역할 한국어 텍스트를 입력하세요..." oninput="updateCharCount()"></textarea>
+        </div>
+        <div class="translate-footer">
+          <span class="char-count" id="char-count">0자</span>
+          <button class="btn-translate" onclick="translateContent()">현지화 번역 →</button>
+        </div>
+      </div>
+      <div class="translate-panel">
+        <div class="translate-panel-header">
+          🇨🇳 중국어 현지화
+          <span id="translate-policy-badge" style="display:none; font-size:10px; background:#E8F5E9; color:#2E7D32; border:1px solid #C8E6C9; padding:2px 8px; border-radius:10px; margin-left:auto;">✓ 정책 준수</span>
+        </div>
+        <div class="translate-panel-body">
+          <div id="translate-loading" style="display:none; text-align:center; padding:40px 0;">
+            <div class="spinner" style="margin:0 auto 12px;"></div>
+            <div style="font-size:13px; color:var(--ink-3);">현지화 번역 중...</div>
+          </div>
+          <textarea class="translate-textarea zh" id="translate-output" placeholder="번역 결과가 여기에 나타납니다..." readonly></textarea>
+        </div>
+        <div class="translate-footer">
+          <div id="translate-hashtags" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+          <button class="btn-copy primary" onclick="copyTranslate()" style="padding:8px 16px; border-radius:8px; font-size:12px; font-family:'Noto Sans KR',sans-serif; font-weight:700; cursor:pointer; border:none; background:var(--red); color:white;">복사</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 사용 현황 탭 -->
+  <div class="tab-content" id="tab-usage">
+    <div class="plan-card">
+      <div class="plan-name">현재 플랜</div>
+      <div class="plan-title">베타 플랜</div>
+      <div class="plan-desc">레드북 마케팅 베타 테스터 전용</div>
+      <div class="plan-features">
+        <div class="plan-feature">월 30회 콘텐츠 생성</div>
+        <div class="plan-feature">한중 현지화 번역 무제한</div>
+        <div class="plan-feature">샤오홍슈 정책 자동 준수</div>
+        <div class="plan-feature">해시태그 자동 추천</div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">이번 달 생성 횟수</div>
+        <div class="stat-value red" id="stat-used">0</div>
+        <div class="stat-sub">/ 30회 한도</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">남은 횟수</div>
+        <div class="stat-value" id="stat-remain">30</div>
+        <div class="stat-sub">회 남음</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">이번 달 번역</div>
+        <div class="stat-value" id="stat-translate">0</div>
+        <div class="stat-sub">회 (무제한)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-icon">📊</div>
+        월간 사용량
+      </div>
+      <div style="height:8px; background:var(--bg); border-radius:4px; overflow:hidden; margin-bottom:8px;">
+        <div id="stat-bar" style="height:100%; background:var(--red); border-radius:4px; width:0%; transition:width .5s;"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--ink-3);">
+        <span id="stat-bar-label">0 / 30회 사용</span>
+        <span id="stat-reset">매월 1일 초기화</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const MONTHLY_LIMIT = 30;
+  let usageData = JSON.parse(localStorage.getItem('redbook_usage') || '{"count":0,"translateCount":0,"month":""}');
+
+  // 월 초기화
+  const thisMonth = new Date().toISOString().slice(0,7);
+  if (usageData.month !== thisMonth) {
+    usageData = { count: 0, translateCount: 0, month: thisMonth };
+    saveUsage();
+  }
+
+  function saveUsage() {
+    localStorage.setItem('redbook_usage', JSON.stringify(usageData));
+    updateUsageUI();
+  }
+
+  function updateUsageUI() {
+    const used = usageData.count;
+    const remain = MONTHLY_LIMIT - used;
+    const pct = (used / MONTHLY_LIMIT * 100).toFixed(0);
+
+    document.getElementById('header-usage').innerHTML = `${used} <span>/ ${MONTHLY_LIMIT}회</span>`;
+    document.getElementById('usage-bar').style.width = pct + '%';
+    document.getElementById('usage-bar').style.background = remain <= 5 ? '#FF9500' : 'var(--red)';
+    document.getElementById('stat-used').textContent = used;
+    document.getElementById('stat-remain').textContent = remain;
+    document.getElementById('stat-translate').textContent = usageData.translateCount;
+    document.getElementById('stat-bar').style.width = pct + '%';
+    document.getElementById('stat-bar-label').textContent = `${used} / ${MONTHLY_LIMIT}회 사용`;
+  }
+
+  updateUsageUI();
+
+  // 탭 전환
+  function switchTab(name, el) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function toggleTag(el) { el.classList.toggle('selected'); }
+
+  function getSelectedTags(id) {
+    return [...document.querySelectorAll(`#${id} .tag-chip.selected`)].map(t => t.textContent.trim());
+  }
+
+  let history = [];
+
+  // 로딩 애니메이션
+  let stepTimer;
+  function startLoadingSteps() {
+    const steps = ['step1', 'step2', 'step3'];
+    let i = 0;
+    steps.forEach(s => {
+      document.getElementById(s).className = 'loading-step';
+    });
+    document.getElementById('step1').className = 'loading-step active';
+    stepTimer = setInterval(() => {
+      if (i < steps.length - 1) {
+        document.getElementById(steps[i]).className = 'loading-step done';
+        i++;
+        document.getElementById(steps[i]).className = 'loading-step active';
+      }
+    }, 1200);
+  }
+  function stopLoadingSteps() { clearInterval(stepTimer); }
+
+  function showLang(lang) {
+    document.querySelectorAll('.lang-tab').forEach((t, i) => {
+      t.classList.toggle('active', (lang === 'zh' && i === 0) || (lang === 'ko' && i === 1));
+    });
+    document.getElementById('result-zh').style.display = lang === 'zh' ? 'block' : 'none';
+    document.getElementById('result-ko').style.display = lang === 'ko' ? 'block' : 'none';
+  }
+
+  function copyResult(lang) {
+    const text = lang === 'zh'
+      ? document.getElementById('result-zh').textContent
+      : document.getElementById('result-ko').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = lang === 'zh'
+        ? document.querySelector('.btn-copy.primary')
+        : document.querySelector('.btn-copy:not(.primary)');
+      const orig = btn.textContent;
+      btn.textContent = '✓ 복사됨!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+
+  function copyTranslate() {
+    const text = document.getElementById('translate-output').value;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = event.currentTarget;
+      btn.textContent = '✓ 복사됨!';
+      setTimeout(() => btn.textContent = '복사', 1500);
+    });
+  }
+
+  function updateCharCount() {
+    const len = document.getElementById('translate-input').value.length;
+    document.getElementById('char-count').textContent = len + '자';
+  }
+
+  async function generateContent() {
+    if (usageData.count >= MONTHLY_LIMIT) {
+      alert(`이번 달 사용 한도(${MONTHLY_LIMIT}회)에 도달했어요.\n다음 달 1일에 초기화됩니다.`);
+      return;
+    }
+
+    const brandName = document.getElementById('brand-name').value.trim();
+    const sellingPoints = document.getElementById('selling-points').value.trim();
+    const category = document.getElementById('category').value;
+    const tones = getSelectedTags('tone-tags');
+    const targets = getSelectedTags('target-tags');
+
+    if (!brandName || !sellingPoints) {
+      alert('매장명과 셀링 포인트를 입력해주세요!');
+      return;
+    }
+
+    const btn = document.getElementById('generate-btn');
+    btn.disabled = true;
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('result-area').style.display = 'none';
+    document.getElementById('loading-card').style.display = 'flex';
+    startLoadingSteps();
+
+    const categoryMap = {
+      restaurant: '레스토랑/맛집', cafe: '카페/디저트',
+      bar: '바/펍/루프탑', experience: '체험/액티비티',
+      beauty: '뷰티/스파', shopping: '쇼핑'
+    };
+
+    const prompt = `당신은 샤오홍슈(小红书) 플랫폼 정책을 완벽히 숙지한 전문 콘텐츠 크리에이터입니다.
+
+매장 정보:
+- 이름: ${brandName}
+- 업종: ${categoryMap[category]}
+- 핵심 특징: ${sellingPoints}
+- 콘텐츠 톤: ${tones.join(', ')}
+- 타겟: ${targets.join(', ')}
+
+【샤오홍슈 절대 금지어 — 사용 시 계정 제재】
+- 최상급: 最好、最棒、第一、唯一、顶级、极致、No.1、100%、全网第一
+- 광고 유도: 限时、抢购、马上买、不买后悔、保证、绝对、买它
+- 외부 연락처: 微信、手机号、链接、二维码、天猫、京东、淘宝
+- 의학 효능: 治疗、消炎、减肥、排毒、提高免疫力
+- 허위 권위: 国家级、官方认证、权威推荐
+
+【권장 표현】
+- 1인칭 체험 일기체: "我去了..."、"真的被惊艳到了"、"发现了宝藏地方"
+- 감성어: 氛围感、治愈、打卡、宝藏、沉浸式、松弛感
+- 실용 정보: 주소, 영업시간, 예약 팁
+
+다음 JSON 형식으로만 답변하세요:
+{
+  "chinese": "중국어 포스팅 (이모지 포함, 300-400자, Z세대 일기체, 정책 완전 준수)",
+  "korean": "한국어 원문 (200-300자)",
+  "hashtags": ["#韩国美食", "#首尔旅行" 등 인기 해시태그 6-8개]
+}`;
+
+    try {
+      const response = await fetch('/claude-proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+
+      const data = await response.json();
+      if (data.error) throw new Error(`API 오류: ${data.error.message}`);
+      if (!data.content?.[0]?.text) throw new Error(`응답 없음: ${JSON.stringify(data)}`);
+
+      const text = data.content[0].text.trim();
+      const clean = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+
+      stopLoadingSteps();
+      document.getElementById('loading-card').style.display = 'none';
+      document.getElementById('result-area').style.display = 'block';
+      document.getElementById('result-zh').textContent = parsed.chinese;
+      document.getElementById('result-ko').textContent = parsed.korean;
+      document.getElementById('result-time').textContent = `생성 완료 · ${new Date().toLocaleTimeString('ko-KR')}`;
+      showLang('zh');
+
+      const hashtagArea = document.getElementById('hashtag-area');
+      hashtagArea.innerHTML = '';
+      (parsed.hashtags || []).forEach(tag => {
+        const pill = document.createElement('span');
+        pill.className = 'hashtag-pill';
+        pill.textContent = tag;
+        pill.onclick = () => navigator.clipboard.writeText(tag);
+        hashtagArea.appendChild(pill);
+      });
+
+      // 사용량 증가
+      usageData.count++;
+      saveUsage();
+
+      // 히스토리
+      history.unshift({ label: brandName, time: new Date().toLocaleTimeString('ko-KR') });
+      if (history.length > 5) history.pop();
+      renderHistory();
+
+    } catch (e) {
+      stopLoadingSteps();
+      document.getElementById('loading-card').style.display = 'none';
+      document.getElementById('empty-state').style.display = 'block';
+      document.getElementById('empty-state').innerHTML = `
+        <div class="empty-icon">⚠️</div>
+        <div class="empty-text">오류가 발생했어요<br><small style="font-size:11px;color:#C0A8A8">${e.message}</small></div>
+      `;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function translateContent() {
+    const inputText = document.getElementById('translate-input').value.trim();
+    if (!inputText) { alert('번역할 텍스트를 입력해주세요!'); return; }
+
+    const btn = document.querySelector('.btn-translate');
+    btn.disabled = true;
+    document.getElementById('translate-loading').style.display = 'block';
+    document.getElementById('translate-output').style.display = 'none';
+
+    const prompt = `당신은 샤오홍슈 전문 현지화 번역가입니다.
+
+원문: ${inputText}
+
+【금지】最好、最棒、第一、唯一、限时、保证、微信、手机号、治疗、减肥
+【권장】1인칭 일기체, 감성어(宝藏、氛围感、治愈、打卡), 이모지
+
+JSON 형식으로만 답변:
+{
+  "chinese": "현지화 텍스트 (이모지 포함, Z세대 일기체)",
+  "hashtags": ["해시태그 5-6개"]
+}`;
+
+    try {
+      const response = await fetch('/claude-proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 800,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+
+      const data = await response.json();
+      if (data.error) throw new Error(data.error.message);
+
+      const text = data.content[0].text.trim();
+      const clean = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+
+      document.getElementById('translate-output').value = parsed.chinese;
+      document.getElementById('translate-policy-badge').style.display = 'inline';
+
+      const hashArea = document.getElementById('translate-hashtags');
+      hashArea.innerHTML = '';
+      (parsed.hashtags || []).forEach(tag => {
+        const pill = document.createElement('span');
+        pill.className = 'hashtag-pill';
+        pill.style.fontSize = '11px';
+        pill.textContent = tag;
+        hashArea.appendChild(pill);
+      });
+
+      usageData.translateCount++;
+      saveUsage();
+
+    } catch (e) {
+      document.getElementById('translate-output').value = `오류: ${e.message}`;
+    } finally {
+      btn.disabled = false;
+      document.getElementById('translate-loading').style.display = 'none';
+      document.getElementById('translate-output').style.display = 'block';
+    }
+  }
+
+  function renderHistory() {
+    const list = document.getElementById('history-list');
+    const section = document.getElementById('history-section');
+    if (history.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    list.innerHTML = history.map(h => `
+      <div class="history-item">
+        <span>${h.label}</span>
+        <span class="history-time">${h.time}</span>
+      </div>
+    `).join('');
+  }
+</script>
+</body>
+</html>
